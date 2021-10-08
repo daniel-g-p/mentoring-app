@@ -9,7 +9,7 @@
 <style lang="scss" scoped>
 @import "../../styles/_abstracts.scss";
 .header {
-  background-color: $color-blue;
+  background-color: $color-green-dark;
   &__heading {
     text-align: center;
     text-transform: uppercase;

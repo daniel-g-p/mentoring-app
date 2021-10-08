@@ -42,14 +42,6 @@
   }
 }
 
-@mixin absolute-position($top, $right, $bottom, $left) {
-  position: absolute;
-  top: $top;
-  right: $right;
-  bottom: $bottom;
-  left: $left;
-}
-
 @mixin basic-grid($n-columns, $gap) {
   display: grid;
   grid-template-columns: repeat($n-columns, 1fr);

@@ -54,11 +54,12 @@ export default {
 @include font-face("Roboto Slab", "regular", 400);
 html {
   font: 400 100%/1 "Roboto Slab", sans-serif;
+  color: $color-green-dark;
 }
 .app {
   display: grid;
   gap: 1rem;
-  max-width: 48rem;
+  max-width: 40rem;
   margin: 0 auto;
   padding: 1rem;
   @include responsive($screen-tablet-s) {
