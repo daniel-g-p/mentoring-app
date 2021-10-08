@@ -2,21 +2,42 @@
   <div class="app">
     <the-header></the-header>
     <the-tabs v-on:set-tab="setTab"></the-tabs>
+    <component :is="tabComponent"></component>
   </div>
 </template>
 
 <script>
 import TheHeader from "./components/sections/TheHeader.vue";
 import TheTabs from "./components/sections/TheTabs.vue";
+import NewEvent from "./components/sections/NewEvent.vue";
+import AllEvents from "./components/sections/AllEvents.vue";
+import BookedEvents from "./components/sections/BookedEvents.vue";
 export default {
   components: {
     TheHeader,
     TheTabs,
+    NewEvent,
+    AllEvents,
+    BookedEvents,
   },
   data() {
     return {
       activeTab: "add",
     };
+  },
+  computed: {
+    tabComponent() {
+      switch (this.activeTab) {
+        case "add":
+          return "new-event";
+        case "events":
+          return "all-events";
+        case "booked":
+          return "booked-events";
+        default:
+          return "all-events";
+      }
+    },
   },
   methods: {
     setTab(tab) {
