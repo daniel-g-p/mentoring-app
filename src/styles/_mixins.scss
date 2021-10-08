@@ -1,0 +1,57 @@
+@mixin reset-css() {
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+  }
+  body {
+    box-sizing: border-box;
+  }
+  a,
+  button,
+  input,
+  textarea {
+    font: 400 100%/1 "Roboto Slab", sans-serif;
+    color: currentColor;
+    background: none;
+    outline: none;
+    border: none;
+  }
+  ol,
+  ul {
+    list-style: none;
+  }
+}
+
+@mixin responsive($screen-size) {
+  @media (min-width: $screen-size) {
+    @content;
+  }
+}
+
+@mixin font-face($font-name, $file-name, $font-weight) {
+  @font-face {
+    font-family: $font-name;
+    src: url("/fonts/#{$file-name}.woff2") format("woff2"),
+      url("/fonts/#{$file-name}.woff") format("woff");
+    font-weight: $font-weight;
+    font-style: normal;
+    font-display: swap;
+  }
+}
+
+@mixin absolute-position($top, $right, $bottom, $left) {
+  position: absolute;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+
+@mixin basic-grid($n-columns, $gap) {
+  display: grid;
+  grid-template-columns: repeat($n-columns, 1fr);
+  gap: $gap;
+}
