@@ -4,8 +4,9 @@
     <input
       v-bind:type="type"
       v-bind:id="id"
-      v-bind:value="modelValue"
-      v-on:input="setValue"
+      v-model="modelValue"
+      v-bind:min="min"
+      v-bind:max="max"
       class="input__data"
     />
     <div v-if="errorVisible" class="input__error">{{ errorMessage }}</div>
@@ -37,6 +38,12 @@ export default {
     errorMessage: {
       type: String,
       default: "Please fill in this field",
+    },
+    min: {
+      type: Number,
+    },
+    max: {
+      type: Number,
     },
     modelValue: {
       type: String,

@@ -46,6 +46,21 @@
           </div>
         </div>
       </div>
+      <radio-field
+        type="checkbox"
+        v-bind:options="timeSlotOptions"
+        id="timeslots"
+        label="Time slots"
+        v-model="timeslots"
+      ></radio-field>
+      <type-input
+        id="maxAttendance"
+        label="Maximum Attendance"
+        type="number"
+        v-bind:min="1"
+        v-bind:max="100"
+        v-model="maxAttendance"
+      ></type-input>
     </form>
   </base-block>
 </template>
@@ -58,6 +73,34 @@ export default {
       title: "",
       subjectInput: "",
       subjects: [],
+      timeSlotOptions: [
+        {
+          id: "am0800",
+          label: "08:00 - 08:30",
+        },
+        {
+          id: "am0845",
+          label: "08:45 - 09:15",
+        },
+        {
+          id: "am0930",
+          label: "09:30 - 10:00",
+        },
+        {
+          id: "am1015",
+          label: "10:15 - 10:45",
+        },
+        {
+          id: "am1100",
+          label: "11:00 - 11:30",
+        },
+        {
+          id: "am1145",
+          label: "11:45 - 12:15",
+        },
+      ],
+      timeslots: [],
+      maxAttendance: null,
     };
   },
   methods: {
@@ -70,6 +113,11 @@ export default {
     removeSubject(subject) {
       const index = this.subjects.findIndex((item) => item === subject);
       this.subjects.splice(index, 1);
+    },
+  },
+  watch: {
+    timeslots(value) {
+      console.log(value);
     },
   },
 };
