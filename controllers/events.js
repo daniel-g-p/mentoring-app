@@ -1,5 +1,5 @@
 export default {
   newEvent(req, res, next) {
-    res.send("Adding new event...");
+    return res.json({ status: 200 });
   },
 };

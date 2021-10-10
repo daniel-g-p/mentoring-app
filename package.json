@@ -5,10 +5,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon index.js",
-    "serve": "npm run --prefix ./client serve",
-    "build": "npm run --prefix ./client vue-cli-service build",
-    "lint": "npm run --prefix ./client vue-cli-service lint"
+    "build": "npm run vue-cli-service build --prefix client",
+    "lint": "npm run vue-cli-service lint --prefix client",
+    "start-client": "npm run serve --prefix client",
+    "start-server": "nodemon index.js",
+    "start": "concurrently 'npm run start-client' 'npm run start-server'"
   },
   "repository": {
     "type": "git",
@@ -22,11 +23,12 @@
   },
   "homepage": "https://github.com/daniel-g-p/mentoring-app#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.13",
-    "npm-run-all": "^4.1.5"
+    "concurrently": "^6.3.0",
+    "nodemon": "^2.0.13"
   }
 }

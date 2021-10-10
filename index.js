@@ -1,11 +1,14 @@
 import dotenv from "dotenv";
 import express from "express";
+import cors from "cors";
 
 import eventsRouter from "./routes/events.js";
 
 dotenv.config();
 
 const app = express();
+
+app.use(cors());
 
 app.get("/", (req, res, next) => {
   return res.send("Hello World");

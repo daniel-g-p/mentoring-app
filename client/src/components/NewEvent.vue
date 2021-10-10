@@ -36,7 +36,8 @@
       <base-type-input
         v-bind="parameters.maxAttendance"
         v-model="maxAttendance"
-      ></base-type-input>
+      >
+      </base-type-input>
       <base-button>Submit</base-button>
     </form>
   </base-block>
@@ -192,12 +193,10 @@ export default {
         !data.speaker ||
         !data.title ||
         !data.subjects.length ||
-        !data.timeslots.length ||
-        !data.maxAttendance
+        !data.timeslots.length
       ) {
         this.errorOpen = true;
       } else {
-        alert("OK!");
       }
     },
     closeErrorModal() {
