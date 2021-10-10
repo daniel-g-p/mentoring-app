@@ -7,7 +7,7 @@
 </template>
 
 <style lang="scss" scoped>
-@import "../../styles/_abstracts.scss";
+@import "../styles/_abstracts.scss";
 .header {
   background-color: $color-green-dark;
   &__heading {

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <button
-      v-for="tab in tabOptions"
+      v-for="tab in tabs"
       v-bind:key="tab.id"
       class="tab"
       v-bind:class="{ 'tab--active': activeTab === tab.id }"
@@ -14,27 +14,27 @@
 
 <script>
 export default {
-  data() {
-    return {
-      tabOptions: [
-        { id: "add", label: "Add" },
-        { id: "events", label: "Events" },
-        { id: "booked", label: "Booked" },
-      ],
-      activeTab: "add",
-    };
+  props: {
+    tabs: {
+      type: Array,
+      required: true,
+    },
+    activeTab: {
+      type: String,
+      required: true,
+    },
   },
+  emits: ["set-tab"],
   methods: {
     setTab(tab) {
-      this.activeTab = tab;
-      this.$emit("set-tab", this.activeTab);
+      this.$emit("set-tab", tab);
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "../../styles/_abstracts.scss";
+@import "../styles/_abstracts.scss";
 .container {
   @include basic-grid(3, 0.5rem);
 }

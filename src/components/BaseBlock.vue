@@ -5,7 +5,7 @@
 </template>
 
 <style lang="scss" scoped>
-@import "../../styles/_abstracts.scss";
+@import "../styles/_abstracts.scss";
 .section {
   padding: 1rem;
   border-radius: 0.25rem;

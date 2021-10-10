@@ -1,43 +1,34 @@
 <template>
   <div class="app">
     <the-header></the-header>
-    <the-tabs v-on:set-tab="setTab"></the-tabs>
-    <component :is="tabComponent"></component>
+    <the-tabs v-bind:tabs="tabs" v-bind:activeTab="activeTab" v-on:set-tab="setTab"></the-tabs>
+    <component :is="activeTab"></component>
   </div>
 </template>
 
 <script>
-import TheHeader from "./components/sections/TheHeader.vue";
-import TheTabs from "./components/sections/TheTabs.vue";
-import NewEvent from "./components/sections/NewEvent.vue";
-import AllEvents from "./components/sections/AllEvents.vue";
-import BookedEvents from "./components/sections/BookedEvents.vue";
+import TheHeader from "./components/TheHeader.vue";
+import TheTabs from "./components/TheTabs.vue";
+import NewEvent from "./components/NewEvent.vue";
+import EventList from "./components/EventList.vue";
+import BookedEvents from "./components/BookedEvents.vue";
 export default {
   components: {
     TheHeader,
     TheTabs,
     NewEvent,
-    AllEvents,
+    EventList,
     BookedEvents,
   },
   data() {
     return {
-      activeTab: "add",
+      activeTab: "new-event",
+      tabs: [
+        { id: "new-event", label: "New" },
+        { id: "event-list", label: "Events" },
+        { id: "booked-events", label: "Booked" },
+      ],
     };
-  },
-  computed: {
-    tabComponent() {
-      switch (this.activeTab) {
-        case "add":
-          return "new-event";
-        case "events":
-          return "all-events";
-        case "booked":
-          return "booked-events";
-        default:
-          return "all-events";
-      }
-    },
   },
   methods: {
     setTab(tab) {

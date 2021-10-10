@@ -4,10 +4,11 @@
     <input
       v-bind:type="type"
       v-bind:id="id"
-      v-model="modelValue"
       v-bind:min="min"
       v-bind:max="max"
       class="input__data"
+      v-bind:value="modelValue"
+      v-on:input="setValue"
     />
     <div v-if="errorVisible" class="input__error">{{ errorMessage }}</div>
   </div>
@@ -46,7 +47,7 @@ export default {
       type: Number,
     },
     modelValue: {
-      type: String,
+      required: true,
     },
   },
   data() {
@@ -61,6 +62,10 @@ export default {
       if (this.mandatory) {
         this.errorVisible = !value;
       }
+      if (this.type === "number") {
+        const numberValue = parseInt(value);
+        this.errorVisible = numberValue > this.max || numberValue < this.min;
+      }
       this.$emit("update:modelValue", value);
     },
   },
@@ -68,7 +73,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../styles/_abstracts.scss";
+@import "../styles/_abstracts.scss";
 .input {
   position: relative;
   padding-top: 0.5rem;
