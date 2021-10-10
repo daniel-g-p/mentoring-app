@@ -54,7 +54,8 @@ export default {
     gap: 0.25rem;
     cursor: pointer;
     transition: color 0.25s ease;
-    &:hover {
+    &:hover,
+    &:focus {
       color: $color-green-light;
     }
   }

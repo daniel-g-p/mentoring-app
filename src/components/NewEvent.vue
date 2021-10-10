@@ -40,6 +40,15 @@
       <base-button>Submit</base-button>
     </form>
   </base-block>
+  <base-modal v-if="errorOpen">
+    <template v-slot:title>Oops...</template>
+    <template v-slot:message>
+      Please fill in all required fields to create a new event.
+    </template>
+    <template v-slot:buttons>
+      <base-button v-on:click="closeErrorModal">Ok</base-button>
+    </template>
+  </base-modal>
 </template>
 
 <script>
@@ -141,6 +150,7 @@ export default {
       subjects: [],
       timeslots: [],
       maxAttendance: null,
+      errorOpen: false,
     };
   },
   methods: {
@@ -185,9 +195,14 @@ export default {
         !data.timeslots.length ||
         !data.maxAttendance
       ) {
-        alert("Please fill in all missing fields");
-        return;
+        this.errorOpen = true;
+      } else {
+        alert("OK!");
       }
+    },
+    closeErrorModal() {
+      this.errorOpen = false;
+      console.log(this.errorOpen);
     },
   },
 };

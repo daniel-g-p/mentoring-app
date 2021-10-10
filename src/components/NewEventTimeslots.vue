@@ -74,6 +74,11 @@ export default {
     border: 0.125rem solid $color-green-light;
     border-radius: 0.25rem;
     cursor: pointer;
+    transition: transform 0.25s ease;
+    &:hover,
+    &:focus {
+      transform: translateY(-0.125rem);
+    }
   }
 }
 </style>
