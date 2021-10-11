@@ -31,7 +31,16 @@ export const eventSchema = (event) => {
       speaker: capitalize(event.speaker),
       title: capitalize(event.title),
       subjects: event.subjects.map((subject) => capitalize(subject)),
-      timeslots: event.timeslots,
+      timeslots: event.timeslots.sort((prev, next) => {
+        const prevHours = `${prev.hours < 10 ? "0" : ""}${prev.hours}`;
+        const prevMinutes = `${prev.minutes < 10 ? "0" : ""}${prev.minutes}`;
+        const nextHours = `${next.hours < 10 ? "0" : ""}${next.hours}`;
+        const nextMinutes = `${next.minutes < 10 ? "0" : ""}${next.minutes}`;
+        return parseInt(`${prevHours}${prevMinutes}`) >
+          parseInt(`${nextHours}${nextMinutes}`)
+          ? 1
+          : -1;
+      }),
       maxAttendance: parseInt(event.maxAttendance) || undefined,
     };
     return validate(

@@ -2,20 +2,26 @@ import { Event } from "../models/Event.js";
 import { eventSchema } from "../utilities/schemas.js";
 
 export default {
-  newEvent(req, res, next) {
+  async newEvent(req, res, next) {
     const { valid, status, data, message } = eventSchema(req.body);
     if (!valid) {
       console.log(message);
       return res.json({ status, message });
     }
-    const event = new Event(
+    const event = await new Event(
       data.speaker,
       data.title,
       data.subjects,
       data.timeslots,
       data.maxAttendance
-    );
-    console.log(event);
+    ).create();
+    if (!event.acknowledged) {
+      return res.json({
+        status: 500,
+        message:
+          "Something went wrong while creating a new event, please try again later.",
+      });
+    }
     return res.json({ status, data });
   },
 };

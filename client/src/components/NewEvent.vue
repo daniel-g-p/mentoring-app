@@ -42,11 +42,9 @@
       <base-button>Submit</base-button>
     </form>
   </base-block>
-  <base-modal v-if="errorOpen">
-    <template v-slot:title>Oops...</template>
-    <template v-slot:message>
-      Please fill in all required fields to create a new event.
-    </template>
+  <base-modal v-if="modal.open">
+    <template v-slot:title>{{ modal.title }}</template>
+    <template v-slot:message>{{ modal.text }}</template>
     <template v-slot:buttons>
       <base-button v-on:click="closeErrorModal">Ok</base-button>
     </template>
@@ -146,13 +144,17 @@ export default {
           errorMessage: "Maximum attendance must be between 1 and 100",
         },
       },
+      modal: {
+        open: false,
+        title: "Oops...",
+        message: "Please fill in all required fields to create a new event.",
+      },
       speaker: "",
       title: "",
       subjectInput: "",
       subjects: [],
       timeslots: [],
       maxAttendance: null,
-      errorOpen: false,
     };
   },
   methods: {
@@ -196,7 +198,7 @@ export default {
         !event.subjects.length ||
         !event.timeslots.length
       ) {
-        this.errorOpen = true;
+        this.openModal();
       } else {
         try {
           const responseData = await fetch(`${this.$server}/events`, {
@@ -207,14 +209,25 @@ export default {
             body: JSON.stringify(event),
           });
           const res = await responseData.json();
-          console.log(res.data ? "OK" : "ERROR");
+          if (res.status === 200) {
+            this.openModal(
+              "Success",
+              `New Event "${res.data.title}" has been created.`
+            );
+          }
         } catch {
           alert("Error");
         }
       }
     },
+    openModal(title, text) {
+      this.modal.title = title || "Oops";
+      this.modal.text =
+        text || "Please fill in all required fields to create a new event.";
+      this.modal.open = true;
+    },
     closeErrorModal() {
-      this.errorOpen = false;
+      this.modal.open = false;
     },
   },
 };

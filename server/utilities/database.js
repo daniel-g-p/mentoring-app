@@ -7,7 +7,10 @@ let db;
 
 export const connectDatabase = async () => {
   try {
-    const client = new MongoClient(process.env.DATABASE);
+    const client = new MongoClient(process.env.DATABASE, {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+    });
     await client.connect();
     db = client.db("mentoring-app");
   } catch (error) {
