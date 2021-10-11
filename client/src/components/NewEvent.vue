@@ -188,7 +188,7 @@ export default {
           );
           return time;
         }),
-        maxAttendance: this.maxAttendance ? parseInt(this.maxAttendance) : null,
+        maxAttendance: parseInt(this.maxAttendance),
       };
       if (
         !event.speaker ||
@@ -207,7 +207,7 @@ export default {
             body: JSON.stringify(event),
           });
           const res = await responseData.json();
-          console.log(res);
+          console.log(res.data ? "OK" : "ERROR");
         } catch {
           alert("Error");
         }

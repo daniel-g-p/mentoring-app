@@ -26,12 +26,13 @@ const validate = (data, ...conditions) => {
 
 export const eventSchema = (event) => {
   try {
+    console.log(event.maxAttendance, typeof event.maxAttendance);
     const data = {
       speaker: capitalize(event.speaker),
       title: capitalize(event.title),
       subjects: event.subjects.map((subject) => capitalize(subject)),
       timeslots: event.timeslots,
-      maxAttendance: parseInt(event.maxAttendance),
+      maxAttendance: parseInt(event.maxAttendance) || undefined,
     };
     return validate(
       data,
@@ -51,9 +52,8 @@ export const eventSchema = (event) => {
         "Please select a valid timeslot"
       ),
       condition(
-        event.maxAttendance === null ||
-          (data.maxAttendance > 0 && data.maxAttendance <= 100),
-        "Maximum attendance must be between 1 and 100"
+        data.maxAttendance ? data.maxAttendance <= 100 : true,
+        "Maximum attendance must be lower than 100"
       )
     );
   } catch (error) {
