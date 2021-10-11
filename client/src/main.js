@@ -8,6 +8,8 @@ import BaseModal from "./components/BaseModal.vue";
 
 const app = createApp(App);
 
+app.config.globalProperties.$server = "http://localhost:3000";
+
 app.component("BaseBlock", BaseBlock);
 app.component("BaseTypeInput", BaseTypeInput);
 app.component("BaseButton", BaseButton);

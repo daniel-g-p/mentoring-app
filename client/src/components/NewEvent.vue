@@ -6,6 +6,7 @@
       class="form"
       v-on:keydown.enter="prevent"
       v-on:submit.prevent="submit"
+      novalidate
     >
       <base-type-input
         v-bind="parameters.speaker"
@@ -176,8 +177,8 @@ export default {
     prevent(event) {
       event.preventDefault();
     },
-    submit() {
-      const data = {
+    async submit() {
+      const event = {
         speaker: this.speaker.trim(),
         title: this.title.trim(),
         subjects: this.subjects,
@@ -190,31 +191,26 @@ export default {
         maxAttendance: this.maxAttendance ? parseInt(this.maxAttendance) : null,
       };
       if (
-        !data.speaker ||
-        !data.title ||
-        !data.subjects.length ||
-        !data.timeslots.length
+        !event.speaker ||
+        !event.title ||
+        !event.subjects.length ||
+        !event.timeslots.length
       ) {
         this.errorOpen = true;
       } else {
-        console.log(data);
-        const output = fetch(`${process.env.SERVER}/events`, {
-          method: "POST",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application.json",
-          },
-          body: JSON.stringify(data),
-        })
-          .then((res) => {
-            return JSON.parse(res);
-          })
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((error) => {
-            alert(error);
+        try {
+          const responseData = await fetch(`${this.$server}/events`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(event),
           });
+          const res = await responseData.json();
+          console.log(res);
+        } catch {
+          alert("Error");
+        }
       }
     },
     closeErrorModal() {

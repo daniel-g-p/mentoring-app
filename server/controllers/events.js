@@ -1,9 +1,12 @@
 import { Event } from "../models/Event.js";
+import { eventSchema } from "../utilities/schemas.js";
 
 export default {
   newEvent(req, res, next) {
-    const { data } = req.body;
-    console.log(data);
-    // return res.json({ status: 200 });
+    const { valid, status, data, message } = eventSchema(req.body);
+    if (!valid) {
+      return res.json({ status, message });
+    }
+    return res.json({ status, data });
   },
 };
