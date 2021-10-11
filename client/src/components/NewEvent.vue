@@ -197,11 +197,28 @@ export default {
       ) {
         this.errorOpen = true;
       } else {
+        console.log(data);
+        const output = fetch(`${process.env.SERVER}/events`, {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application.json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((res) => {
+            return JSON.parse(res);
+          })
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((error) => {
+            alert(error);
+          });
       }
     },
     closeErrorModal() {
       this.errorOpen = false;
-      console.log(this.errorOpen);
     },
   },
 };

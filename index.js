@@ -13,6 +13,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors());
+app.use(express.json());
 
 app.use("/", rootRouter);
 app.use("/events", eventsRouter);
@@ -24,7 +25,7 @@ const startServer = async () => {
     await connectDatabase();
     app.listen(process.env.PORT || 3000);
     if (process.env.NODE_ENV === "development") {
-      console.log(`Server running on ${process.env.SERVER_ADDRESS}...`);
+      console.log(`Server running on ${process.env.SERVER}...`);
     }
   } catch (error) {
     console.log(error);
