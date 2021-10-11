@@ -32,6 +32,7 @@
       </div>
       <new-event-timeslots
         v-bind:options="parameters.timeslots"
+        v-bind:checkedItems="timeslots"
         v-on:toggle-option="toggleTimeslot"
       ></new-event-timeslots>
       <base-type-input
@@ -60,6 +61,7 @@ export default {
     NewEventSubjectList,
     NewEventTimeslots,
   },
+  emits: ["add-event"],
   data() {
     return {
       parameters: {
@@ -210,20 +212,25 @@ export default {
           });
           const res = await responseData.json();
           if (res.status === 200) {
-            this.openModal(
-              "Success",
-              `New Event "${res.data.title}" has been created.`
-            );
+            this.resetForm();
+            this.$emit("add-event", res.id);
           }
-        } catch {
-          alert("Error");
+        } catch (error) {
+          alert(error);
         }
       }
     },
+    resetForm() {
+      this.speaker = "";
+      this.title = "";
+      this.subjectInput = "";
+      this.subjects = [];
+      this.timeslots = [];
+      this.maxAttendance = null;
+    },
     openModal(title, text) {
       this.modal.title = title || "Oops";
-      this.modal.text =
-        text || "Please fill in all required fields to create a new event.";
+      this.modal.text = text || "Please fill in all required fields to create a new event.";
       this.modal.open = true;
     },
     closeErrorModal() {

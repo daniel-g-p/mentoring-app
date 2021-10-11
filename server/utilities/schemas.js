@@ -26,7 +26,6 @@ const validate = (data, ...conditions) => {
 
 export const eventSchema = (event) => {
   try {
-    console.log(event.maxAttendance, typeof event.maxAttendance);
     const data = {
       speaker: capitalize(event.speaker),
       title: capitalize(event.title),

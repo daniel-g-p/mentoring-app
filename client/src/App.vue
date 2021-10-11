@@ -2,7 +2,7 @@
   <div class="app">
     <the-header></the-header>
     <the-tabs v-bind:tabs="tabs" v-bind:activeTab="activeTab" v-on:set-tab="setTab"></the-tabs>
-    <component :is="activeTab"></component>
+    <component :is="activeTab" v-on:add-event="addEvent"></component>
   </div>
 </template>
 
@@ -34,6 +34,9 @@ export default {
     setTab(tab) {
       this.activeTab = tab;
     },
+    addEvent(id) {
+      console.log(id);
+    }
   },
 };
 </script>

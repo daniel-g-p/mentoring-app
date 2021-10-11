@@ -5,7 +5,6 @@ export default {
   async newEvent(req, res, next) {
     const { valid, status, data, message } = eventSchema(req.body);
     if (!valid) {
-      console.log(message);
       return res.json({ status, message });
     }
     const event = await new Event(
@@ -22,6 +21,6 @@ export default {
           "Something went wrong while creating a new event, please try again later.",
       });
     }
-    return res.json({ status, data });
+    return res.json({ status, id: event.insertedId.toString() });
   },
 };

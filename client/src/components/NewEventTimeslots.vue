@@ -7,6 +7,7 @@
         name="timeslot"
         v-bind:id="option.id"
         class="box__input"
+        v-bind:checked="isChecked(option.id)"
         v-on:change="toggleOption(option.id)"
       />
       <label v-bind:for="option.id" class="box__label">
@@ -23,12 +24,19 @@ export default {
       type: Array,
       required: true,
     },
+    checkedItems: {
+      type: Array,
+      required: true,
+    },
   },
   emits: ["toggle-option"],
   methods: {
     toggleOption(id) {
       this.$emit("toggle-option", id);
     },
+    isChecked(id) {
+      return this.checkedItems.includes(id);
+    }
   },
 };
 </script>
