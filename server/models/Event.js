@@ -1,7 +1,6 @@
 import { getDatabase } from "../utilities/database.js";
-import { ObjectId } from "mongodb";
 
-export class Event {
+export default class Event {
   constructor(speaker, title, subjects, timeslots, maxAttendance) {
     this.speaker = speaker;
     this.title = title;
@@ -13,5 +12,10 @@ export class Event {
     const collection = db.collection("events");
     const event = await collection.insertOne(this);
     return event;
+  }
+  static async delete(query) {
+    const db = getDatabase();
+    const collection = db.collection("events");
+    return await collection.deleteMany(query);
   }
 }

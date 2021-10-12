@@ -1,4 +1,4 @@
-import { Event } from "../models/Event.js";
+import Event from "../models/Event.js";
 import { eventSchema } from "../utilities/schemas.js";
 
 export default {
