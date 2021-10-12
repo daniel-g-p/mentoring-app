@@ -35,7 +35,7 @@ export default {
       this.activeTab = tab;
     },
     addEvent(id) {
-      console.log(id);
+      console.log(`New Event: ${id}`);
     }
   },
 };

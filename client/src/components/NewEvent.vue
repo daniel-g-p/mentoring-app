@@ -4,7 +4,7 @@
     <form
       action="/"
       class="form"
-      v-on:keydown.enter="prevent"
+      v-on:keydown.enter="preventSubmission"
       v-on:submit.prevent="submit"
       novalidate
     >
@@ -31,9 +31,9 @@
         ></new-event-subject-list>
       </div>
       <new-event-timeslots
-        v-bind:options="parameters.timeslots"
-        v-bind:checkedItems="timeslots"
-        v-on:toggle-option="toggleTimeslot"
+        v-bind:formActive="formActive"
+        v-on:toggle-timeslot="toggleTimeslot"
+        v-on:reset-form="restartForm"
       ></new-event-timeslots>
       <base-type-input
         v-bind="parameters.maxAttendance"
@@ -47,7 +47,7 @@
     <template v-slot:title>{{ modal.title }}</template>
     <template v-slot:message>{{ modal.text }}</template>
     <template v-slot:buttons>
-      <base-button v-on:click="closeErrorModal">Ok</base-button>
+      <base-button v-on:click="closeModal">Ok</base-button>
     </template>
   </base-modal>
 </template>
@@ -81,71 +81,16 @@ export default {
           id: "subjects",
           label: "Subjects",
         },
-        timeslots: [
-          {
-            id: "slot1",
-            label: "08:00 - 08:30",
-            time: {
-              hours: 8,
-              minutes: 0,
-              duration: 30,
-            },
-          },
-          {
-            id: "slot2",
-            label: "08:45 - 09:15",
-            time: {
-              hours: 8,
-              minutes: 45,
-              duration: 30,
-            },
-          },
-          {
-            id: "slot3",
-            label: "09:30 - 10:00",
-            time: {
-              hours: 9,
-              minutes: 30,
-              duration: 30,
-            },
-          },
-          {
-            id: "slot4",
-            label: "10:15 - 10:45",
-            time: {
-              hours: 10,
-              minutes: 15,
-              duration: 30,
-            },
-          },
-          {
-            id: "slot5",
-            label: "11:00 - 11:30",
-            time: {
-              hours: 11,
-              minutes: 0,
-              duration: 30,
-            },
-          },
-          {
-            id: "slot6",
-            label: "11:45 - 12:15",
-            time: {
-              hours: 11,
-              minutes: 45,
-              duration: 30,
-            },
-          },
-        ],
         maxAttendance: {
           id: "maxAttendance",
           label: "Maximum Attendance",
           type: "number",
           min: 1,
           max: 100,
-          errorMessage: "Maximum attendance must be between 1 and 100",
+          errorMessage: "Maximum attendance must be between 1 and 100.",
         },
       },
+      formActive: true,
       modal: {
         open: false,
         title: "Oops...",
@@ -170,15 +115,15 @@ export default {
       const index = this.subjects.findIndex((item) => item === subject);
       this.subjects.splice(index, 1);
     },
-    toggleTimeslot(id) {
-      const index = this.timeslots.findIndex((item) => item === id);
+    toggleTimeslot(timeslot) {
+      const index = this.timeslots.findIndex((slot) => slot.id === timeslot.id);
       if (index === -1) {
-        this.timeslots.push(id);
+        this.timeslots.push(timeslot);
       } else {
         this.timeslots.splice(index, 1);
       }
     },
-    prevent(event) {
+    preventSubmission(event) {
       event.preventDefault();
     },
     async submit() {
@@ -186,12 +131,7 @@ export default {
         speaker: this.speaker.trim(),
         title: this.title.trim(),
         subjects: this.subjects,
-        timeslots: this.timeslots.map((item) => {
-          const { time } = this.parameters.timeslots.find(
-            (slot) => slot.id === item
-          );
-          return time;
-        }),
+        timeslots: this.timeslots.map((timeslot) => timeslot.time),
         maxAttendance: parseInt(this.maxAttendance),
       };
       if (
@@ -212,6 +152,7 @@ export default {
           });
           const res = await responseData.json();
           if (res.status === 200) {
+            this.formActive = false;
             this.resetForm();
             this.$emit("add-event", res.id);
           }
@@ -228,12 +169,16 @@ export default {
       this.timeslots = [];
       this.maxAttendance = null;
     },
+    restartForm() {
+      this.formActive = true;
+    },
     openModal(title, text) {
       this.modal.title = title || "Oops";
-      this.modal.text = text || "Please fill in all required fields to create a new event.";
+      this.modal.text =
+        text || "Please fill in all required fields to create a new event.";
       this.modal.open = true;
     },
-    closeErrorModal() {
+    closeModal() {
       this.modal.open = false;
     },
   },
