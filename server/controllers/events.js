@@ -2,6 +2,10 @@ import Event from "../models/Event.js";
 import { eventSchema } from "../utilities/schemas.js";
 
 export default {
+  async getEvents(req, res, next) {
+    const events = await Event.find({});
+    return res.json(events);
+  },
   async newEvent(req, res, next) {
     const { valid, status, data, message } = eventSchema(req.body);
     if (!valid) {

@@ -6,6 +6,9 @@ import controller from "../controllers/events.js";
 
 const router = express.Router();
 
-router.post("/", tryCatch(controller.newEvent));
+router
+  .route("/")
+  .get(tryCatch(controller.getEvents))
+  .post(tryCatch(controller.newEvent));
 
 export default router;

@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { getDatabase } from "../utilities/database.js";
 
 export default class Event {
@@ -12,6 +13,16 @@ export default class Event {
     const collection = db.collection("events");
     const event = await collection.insertOne(this);
     return event;
+  }
+  static async find(query, fields = []) {
+    const db = getDatabase();
+    const collection = db.collection("events");
+    const searchQuery = query._id ? { _id: new ObjectId(query._id) } : query;
+    const options = { projection: {} };
+    fields.forEach((field) => {
+      options.projection[field] = 1;
+    });
+    return await collection.find(searchQuery, options).toArray();
   }
   static async delete(query) {
     const db = getDatabase();

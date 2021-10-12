@@ -126,6 +126,26 @@ export default {
     preventSubmission(event) {
       event.preventDefault();
     },
+    openModal(title, text) {
+      this.modal.title = title || "Oops";
+      this.modal.text =
+        text || "Please fill in all required fields to create a new event.";
+      this.modal.open = true;
+    },
+    closeModal() {
+      this.modal.open = false;
+    },
+    resetForm() {
+      this.speaker = "";
+      this.title = "";
+      this.subjectInput = "";
+      this.subjects = [];
+      this.timeslots = [];
+      this.maxAttendance = null;
+    },
+    restartForm() {
+      this.formActive = true;
+    },
     async submit() {
       const event = {
         speaker: this.speaker.trim(),
@@ -143,43 +163,27 @@ export default {
         this.openModal();
       } else {
         try {
-          const responseData = await fetch(`${this.$server}/events`, {
+          const res = await fetch(`${this.$server}/events`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify(event),
           });
-          const res = await responseData.json();
-          if (res.status === 200) {
+          if (res.ok) {
+            const { id } = await res.json();
             this.formActive = false;
             this.resetForm();
-            this.$emit("add-event", res.id);
+            this.$emit("add-event", id);
+            this.openModal("Success", "Your new event has been added.");
           }
         } catch (error) {
-          alert(error);
+          this.openModal(
+            "Oops...",
+            "Something went wrong while trying to add a new event, please try again later."
+          );
         }
       }
-    },
-    resetForm() {
-      this.speaker = "";
-      this.title = "";
-      this.subjectInput = "";
-      this.subjects = [];
-      this.timeslots = [];
-      this.maxAttendance = null;
-    },
-    restartForm() {
-      this.formActive = true;
-    },
-    openModal(title, text) {
-      this.modal.title = title || "Oops";
-      this.modal.text =
-        text || "Please fill in all required fields to create a new event.";
-      this.modal.open = true;
-    },
-    closeModal() {
-      this.modal.open = false;
     },
   },
 };
@@ -187,9 +191,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "../styles/_abstracts.scss";
-.container {
-  border: 0.125rem solid $color-grey;
-}
 .heading {
   margin-bottom: 1rem;
 }
