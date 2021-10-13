@@ -9,9 +9,13 @@
         {{ subject }}
       </div>
     </div>
-    <event-list-registration v-bind:timeslots="timeslots"></event-list-registration>
-    <base-button>Add participant</base-button>
-  </base-block>  
+    <event-list-registration
+      v-bind:timeslots="timeslots"
+      v-bind:formActive="formActive"
+      v-on:activate-form="toggleForm"
+      v-on:deactivate-form="toggleForm"
+    ></event-list-registration>
+  </base-block>
 </template>
 
 <script>
@@ -40,6 +44,16 @@ export default {
     timeslots: {
       type: Array,
       required: true,
+    },
+  },
+  data() {
+    return {
+      formActive: false,
+    };
+  },
+  methods: {
+    toggleForm() {
+      this.formActive = !this.formActive;
     },
   },
 };

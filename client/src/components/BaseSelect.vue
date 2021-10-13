@@ -1,13 +1,13 @@
 <template>
   <div class="input">
     <label v-bind:for="id" class="input__label">{{ label }}</label>
-    <select class="input__select" v-bind:id="id">
+    <select class="input__select" v-bind:id="id" v-bind:value="modelValue" v-on:change="setValue">
       <option
         v-for="option in options"
         v-bind:key="option.id"
         v-bind:value="option.id"
       >
-        {{ option.id }}
+        {{ option.label }}
       </option>
     </select>
   </div>
@@ -28,7 +28,16 @@ export default {
       type: Array,
       required: true,
     },
+    modelValue: {
+      type: String,
+      required: true,
+    },
   },
+  methods: {
+    setValue($event) {
+      this.$emit("update:modelValue", $event.target.value);
+    }
+  }
 };
 </script>
 
