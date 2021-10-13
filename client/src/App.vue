@@ -2,7 +2,9 @@
   <div class="app">
     <the-header></the-header>
     <the-tabs v-bind:tabs="tabs" v-bind:activeTab="activeTab" v-on:set-tab="setTab"></the-tabs>
-    <component :is="activeTab" v-on:add-event="addEvent"></component>
+    <new-event v-if="activeTab === 'new-event'" v-on:add-event="addEvent"></new-event>
+    <event-list v-else-if="activeTab === 'event-list'"></event-list>
+    <booked-events v-else-if="activeTab === 'booked-events'"></booked-events>
   </div>
 </template>
 
@@ -35,7 +37,7 @@ export default {
       this.activeTab = tab;
     },
     addEvent(id) {
-      console.log(`New Event: ${id}`);
+      this.activeTab = "event-list";
     }
   },
 };

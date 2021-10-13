@@ -4,6 +4,9 @@ import { eventSchema } from "../utilities/schemas.js";
 export default {
   async getEvents(req, res, next) {
     const events = await Event.find({});
+    events.sort((prev, next) => {
+      return prev.created > next.created ? -1 : 1;
+    });
     return res.json(events);
   },
   async newEvent(req, res, next) {

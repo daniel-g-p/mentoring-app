@@ -7,6 +7,7 @@ export default class Event {
     this.title = title;
     (this.subjects = subjects), (this.timeslots = timeslots);
     this.maxAttendance = maxAttendance;
+    this.created = new Date();
   }
   async create() {
     const db = getDatabase();
