@@ -22,7 +22,7 @@ export default {
   },
   data() {
     return {
-      activeTab: "new-event",
+      activeTab: "event-list",
       tabs: [
         { id: "new-event", label: "New" },
         { id: "event-list", label: "Events" },
