@@ -21,7 +21,7 @@ export default {
       type: String,
       default: "text",
       validator(value) {
-        return ["text", "number"].includes(value);
+        return ["text", "number", "email"].includes(value);
       },
     },
     id: {
@@ -53,6 +53,7 @@ export default {
   data() {
     return {
       errorVisible: false,
+      emailRegex: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
     };
   },
   emits: ["update:modelValue"],
@@ -65,6 +66,9 @@ export default {
       if (this.type === "number") {
         const numberValue = parseInt(value);
         this.errorVisible = numberValue > this.max || numberValue < this.min;
+      } else if (this.type === "email") {
+        const emailValid = value.match(this.emailRegex);
+        this.errorVisible = !emailValid;
       }
       this.$emit("update:modelValue", value);
     },

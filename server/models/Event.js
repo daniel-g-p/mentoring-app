@@ -5,7 +5,11 @@ export default class Event {
   constructor(speaker, title, subjects, timeslots, maxAttendance) {
     this.speaker = speaker;
     this.title = title;
-    (this.subjects = subjects), (this.timeslots = timeslots);
+    this.subjects = subjects;
+    this.timeslots = timeslots.map((timeslot) => {
+      timeslot.attendees = 0;
+      return timeslot;
+    });
     this.maxAttendance = maxAttendance;
     this.created = new Date();
   }

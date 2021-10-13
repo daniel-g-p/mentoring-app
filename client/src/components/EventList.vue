@@ -26,9 +26,15 @@ export default {
         if (!events.length) {
           alert("No events were found");
         } else {
-          this.eventList = events;
+          this.eventList = events.map((event) => {
+            for (let i = 0; i < event.timeslots.length; i++) {
+              event.timeslots[i].id = `slot${i + 1}`;
+            }
+            return event;
+          });
         }
-      } catch {
+      } catch (error) {
+        console.log(error);
         alert("Failed to retrieve data");
       }
     },

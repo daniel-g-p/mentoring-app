@@ -9,13 +9,17 @@
         {{ subject }}
       </div>
     </div>
+    <event-list-registration v-bind:timeslots="timeslots"></event-list-registration>
     <base-button>Add participant</base-button>
-  </base-block>
+  </base-block>  
 </template>
 
 <script>
-import BaseBlock from "./BaseBlock.vue";
+import EventListRegistration from "./EventListRegistration.vue";
 export default {
+  components: {
+    EventListRegistration,
+  },
   props: {
     _id: {
       type: String,
