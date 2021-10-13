@@ -29,6 +29,13 @@ export default class Event {
     });
     return await collection.find(searchQuery, options).toArray();
   }
+  static async edit(eventId, update) {
+    const db = getDatabase();
+    const collection = db.collection("events");
+    const filter = { _id: new ObjectId(eventId) };
+    const data = { $set: update };
+    return await collection.updateOne(filter, data);
+  }
   static async delete(query) {
     const db = getDatabase();
     const collection = db.collection("events");

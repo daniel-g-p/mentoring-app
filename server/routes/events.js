@@ -11,4 +11,6 @@ router
   .get(tryCatch(controller.getEvents))
   .post(tryCatch(controller.newEvent));
 
+router.route("/registration").post(tryCatch(controller.addParticipant));
+
 export default router;

@@ -10,6 +10,7 @@
       </div>
     </div>
     <event-list-registration
+      v-bind:eventId="_id"
       v-bind:timeslots="timeslots"
       v-bind:formActive="formActive"
       v-on:activate-form="toggleForm"

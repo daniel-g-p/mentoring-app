@@ -3,6 +3,10 @@ const capitalize = (string) => {
   return `${trimmed.slice(0, 1).toUpperCase()}${trimmed.slice(1)}`;
 };
 
+const validateEmail = (email) => {
+  return email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
+};
+
 const condition = (
   condition,
   message = "Please check your input",
@@ -64,7 +68,30 @@ export const eventSchema = (event) => {
         "Maximum attendance must be lower than 100"
       )
     );
+  } catch {
+    return { valid: false, message: "Something went wrong", status: 500 };
+  }
+};
+
+export const participantSchema = (participant) => {
+  try {
+    const data = {
+      eventId: participant.eventId,
+      name: capitalize(participant.name),
+      email: capitalize(participant.email),
+      timeslot: participant.timeslot,
+    };
+    return validate(
+      data,
+      condition(data.eventId, "Failed to find the event you were looking for."),
+      condition(data.name, "Please enter the participant's name."),
+      condition(
+        data.email && validate(data.email),
+        "Please enter a valid email address.",
+      ),
+    );
   } catch (error) {
+    console.log(error);
     return { valid: false, message: "Something went wrong", status: 500 };
   }
 };

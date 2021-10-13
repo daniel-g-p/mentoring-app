@@ -1,5 +1,5 @@
 <template>
-  <form class="form">
+  <form class="form" v-on:keydown.enter="$event.preventDefault()">
     <div class="form__content" v-if="formActive">
       <base-select
         id="timeslot"
@@ -33,6 +33,10 @@
 <script>
 export default {
   props: {
+    eventId: {
+      type: String,
+      required: true,
+    },
     timeslots: {
       type: Array,
       required: true,
@@ -111,6 +115,7 @@ export default {
         return timeslot.id === this.timeslot;
       });
       const data = {
+        eventId: this.eventId,
         name: this.name.trim(),
         email: this.email.trim(),
         timeslot: {
@@ -134,7 +139,20 @@ export default {
       this.modal.open = false;
     },
     async submitForm(data) {
-      this.openModal("Success", "Participant has been added to the event.");
+      try {
+        const resJson = await fetch(`${this.$server}/events/registration`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+        const res = await resJson.json();
+        console.log(res);
+        this.openModal("Success", "Participant has been added to the event.");
+      } catch {
+        this.openModal("Error", "Failed to add participant to the event, please try again later.");
+      }
     },
   },
 };
