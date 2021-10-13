@@ -21,6 +21,13 @@
     </div>
     <base-button v-on:click.prevent="submitButton">Add participant</base-button>
   </form>
+  <base-modal v-if="modal.open">
+    <template v-slot:title>{{ modal.title }}</template>
+    <template v-slot:message>{{ modal.text }}</template>
+    <template v-slot:buttons>
+      <base-button v-on:click="closeModal">Ok</base-button>
+    </template>
+  </base-modal>
 </template>
 
 <script>
@@ -58,7 +65,13 @@ export default {
       },
       name: "",
       email: "",
+      emailRegex: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
       timeslot: "",
+      modal: {
+        open: false,
+        title: "Error",
+        text: "Something went wrong",
+      },
     };
   },
   computed: {
@@ -85,14 +98,43 @@ export default {
     },
     submitButton() {
       if (!this.formActive) {
-        this.$emit("activate-form");
-      } else {
-        alert("Submitting...");
+        return this.$emit("activate-form");
       }
+      if (!this.timeslot) {
+        return this.openModal("Error", "Please select a timeslot.");
+      } else if (!this.name) {
+        return this.openModal("Error", "Please enter the participant's name.");
+      } else if (!this.email || !this.email.match(this.emailRegex)) {
+        return this.openModal("Error", "Please enter a valid email address.");
+      }
+      const timeslotData = this.filteredTimeslots.find((timeslot) => {
+        return timeslot.id === this.timeslot;
+      });
+      const data = {
+        name: this.name.trim(),
+        email: this.email.trim(),
+        timeslot: {
+          hours: timeslotData.hours,
+          minutes: timeslotData.minutes,
+          duration: timeslotData.duration,
+        },
+      };
+      this.submitForm(data);
     },
     cancelButton() {
-        this.resetFormData();
+      this.resetFormData();
       this.$emit("deactivate-form");
+    },
+    openModal(title = "Error", text = "Something went wrong.") {
+      this.modal.title = title;
+      this.modal.text = text;
+      this.modal.open = true;
+    },
+    closeModal() {
+      this.modal.open = false;
+    },
+    async submitForm(data) {
+      this.openModal("Success", "Participant has been added to the event.");
     },
   },
 };
